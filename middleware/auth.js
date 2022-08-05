@@ -1,12 +1,15 @@
-const CustomAPIError = require("../errors/custom-error");
 const jwt = require("jsonwebtoken");
+const {
+  UnathenticatedError,
+} = require("../errors");
+
 
 const authMiddleware = async (req, res, next) => {
   const authHeader = req.headers.authorization;
   if (!authHeader || !authHeader.startsWith("Bearer")) {
-    throw new CustomAPIError("You are not granted access", 401);
+    throw new UnathenticatedError("You are not granted access");
   }
-
+  
   const token = authHeader.split(" ")[1];
 
   try {
@@ -16,7 +19,7 @@ const authMiddleware = async (req, res, next) => {
     next();
   } catch (err) {
     console.log("an error occured", err);
-    throw new CustomAPIError("You are not granted access", 401);
+    throw new UnathenticatedError("You are not granted access");
   }
 };
 

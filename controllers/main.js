@@ -1,14 +1,11 @@
 require("dotenv").config();
-const CustomAPIError = require("../errors/custom-error");
 const jwt = require("jsonwebtoken");
+const { BadRequest } = require("../errors");
 
 const login = async (req, res) => {
   const { username, password } = req.body;
   if (!username || !password) {
-    throw new CustomAPIError(
-      "please provide username and password....thanx",
-      400
-    );
+    throw new BadRequest("You are not granted access");
   }
 
   const id = new Date().getDate();
